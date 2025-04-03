@@ -1,0 +1,24 @@
+trigger:
+  batch: true
+  branches:
+    exclude:
+    - release/*
+    - develop
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: ado-templates
+
+parameters:
+- name: testcases
+  type: object
+  default:
+    - 01_basic_aks
+
+extends:
+  template: /stages/mainstage.yaml@templates
+  parameters:
+    wrap:
+      testcases: ${{ parameters.testcases }}

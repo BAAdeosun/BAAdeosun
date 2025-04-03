@@ -1,0 +1,27 @@
+trigger:
+  batch: true
+  branches:
+    exclude:
+    - release/*
+    - develop
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: ado-templates
+
+parameters:
+- name: testcases
+  type: object
+  default:
+    - 01_advanced_acr_geo_redundant
+    - 02_basic_acr
+    - 03_basic_acr_public_access
+    - 04_basic_acr_zone_redundant
+
+extends:
+  template: /stages/mainstage.yaml@templates
+  parameters:
+    wrap:
+      testcases: ${{ parameters.testcases }}

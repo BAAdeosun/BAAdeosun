@@ -1,0 +1,25 @@
+trigger:
+  batch: true
+  branches:
+    exclude:
+    - release/*
+    - develop
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: ado-templates
+
+parameters:
+- name: testcases
+  type: object
+  default:
+    - 01_basic_nodepool
+    - 02_auto_scaling_nodepool
+
+extends:
+  template: /stages/mainstage.yaml@templates
+  parameters:
+    wrap:
+      testcases: ${{ parameters.testcases }}

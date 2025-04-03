@@ -1,0 +1,29 @@
+trigger:
+  batch: true
+  branches:
+    exclude:
+    - release/*
+    - develop
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: ado-templates
+
+parameters:
+- name: testcases
+  type: object
+  default: 
+    - 01_basic
+    - 02_firewall
+    - 03_az_ad
+    - 04_pep
+    - 05_access_policy
+    - 06_full
+
+extends:
+  template: /stages/mainstage.yaml@templates
+  parameters:
+    wrap:
+      testcases: ${{ parameters.testcases }}

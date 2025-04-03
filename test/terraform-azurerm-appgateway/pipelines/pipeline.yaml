@@ -1,0 +1,28 @@
+trigger:
+  batch: true
+  branches:
+    exclude:
+    - release/*
+    - develop
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: ado-templates
+
+parameters:
+- name: testcases
+  type: object
+  default:
+    - 01_appgateway_publicip
+    - 02_appgateway_both_ips
+    - 03_appgateway_path_routing
+    - 04_appgateway_waf
+    - 05_appgateway_rewrite
+
+extends:
+  template: /stages/mainstage.yaml@templates
+  parameters:
+    wrap:
+      testcases: ${{ parameters.testcases }}

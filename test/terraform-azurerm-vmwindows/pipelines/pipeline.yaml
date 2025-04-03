@@ -1,0 +1,30 @@
+trigger:
+  batch: true
+  branches:
+    exclude:
+    - release/*
+    - develop
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: ado-templates
+
+parameters:
+- name: testcases
+  type: object
+  default:
+    - 01_basic_vm
+    - 02_advanced_vm_with_data_disk
+    #- 03_advanced_vm_with_public_ip # Flow log retention_policy set to 120 days (checkov requiremet > 90) nevertheles checkov throws error; checkov:skip=CKV_AZURE_12 fails either;
+    - 04_advanced_vm_size
+    - 05_advanced_vm_predefined_image
+    - 06_advanced_vm_custom_image
+    - 07_advanced_vm_image_id # VM creation timeout; TODO: check generic-windowsserver2019-dc image version in ectl_image_gallery
+
+extends:
+  template: /stages/mainstage.yaml@templates
+  parameters:
+    wrap:
+      testcases: ${{ parameters.testcases }}
